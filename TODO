@@ -1,0 +1,9 @@
+Show pool status:
+
+URI/dashboard/stats/vmpooler/pool
+
+
+Possibly do multi-vm grabs
+
+
+Show health of overall system (what's running, what's booting, etc)
