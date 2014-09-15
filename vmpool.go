@@ -9,6 +9,8 @@ import "regexp"
 import "bytes"
 import "encoding/json"
 
+var version string
+
 func stringInSlice(a string, list []string) bool {
 	for _, b := range list {
 		matched, err := regexp.MatchString(a, b)
@@ -134,6 +136,7 @@ func grab(url string, args string) {
 }
 
 func usage() {
+	fmt.Println("vmpool version: " + version + " - 2014")
 	fmt.Println("vmpool list <pattern>")
 	fmt.Println("vmpool grab <poolname>")
 	fmt.Println("vmpool delete <hostname>")
@@ -142,7 +145,7 @@ func usage() {
 
 func parseArgs(args []string) (c string, a string) {
 	argument := ""
-	valid_subcommands := []string{"list", "grab", "delete"}
+	valid_subcommands := []string{"list", "grab", "delete", "--help", "help", "version", "--version"}
 	if len(args) < 2 {
 		fmt.Println("vmpool requires a command")
 		usage()
@@ -150,6 +153,14 @@ func parseArgs(args []string) (c string, a string) {
 	if !stringInSlice(args[1], valid_subcommands) {
 
 		fmt.Println("invalid subcommand")
+		usage()
+	}
+
+	if args[1] == "--help" || args[1] == "help" {
+		usage()
+	}
+
+	if args[1] == "version" || args[1] == "--version" {
 		usage()
 	}
 
