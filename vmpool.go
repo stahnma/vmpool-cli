@@ -48,12 +48,7 @@ func list(url string, pattern string) {
 	} else {
 		pattern = strings.ToLower(pattern)
 		matched := stringInSlice(pattern, list)
-		if matched == false {
-			// Invalid Pattern
-			for i := 0; i < len(list); i++ {
-				fmt.Println(list[i])
-			}
-		} else {
+		if matched == true {
 			var output []string
 			for i := 0; i < len(list); i++ {
 				matched, err := regexp.MatchString(pattern, list[i])
