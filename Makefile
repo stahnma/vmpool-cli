@@ -10,7 +10,7 @@ vmpool:
 
 
 install:
-	sudo cp -pr vmpool /usr/local/bin
+	sudo cp -pr vmpool $(DESTDIR)/usr/local/bin
 
 linux:
 # In order to get the cross-compile options on mac, install via
