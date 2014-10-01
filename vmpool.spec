@@ -1,6 +1,6 @@
 %define debug_package %{nil}
 
-Name:      vmpool-cli
+Name:      vmpool
 Version:   ==VERSION==
 Release:   1%{?dist}
 Summary:   CLI Utility for vmpooler
