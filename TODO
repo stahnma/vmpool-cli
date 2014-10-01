@@ -5,3 +5,8 @@ URI/dashboard/stats/vmpooler/pool
 
 * Possibly do multi-vm grabs
 * Show health of overall system (what's running, what's booting, etc)
+
+
+# Other stuff
+* Figure out versioning. When git isn't around, how should I do it?
+
