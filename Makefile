@@ -6,9 +6,9 @@ TMP_PATTERN:=$(shell mktemp -d tmpbuild-XXXXXX)
 TMPDIR:=$(shell pwd)/$(TMP_PATTERN)
 TAR_TMP_DIR:=$(shell mktemp -d -t tmptarball)
 else
-#TMP_PATTERN:=$(shell mktemp -d -u -p . -t rpmbuild-XXXXXXX)
-#TMPDIR:=$(shell pwd)/$(TMP_PATTERN)
-#TAR_TMP_DIR:=$(shell mktemp -d -u -t tarball-XXXXXXX)
+TMP_PATTERN:=$(shell mktemp -d -u -p . -t rpmbuild-XXXXXXX)
+TMPDIR:=$(shell pwd)/$(TMP_PATTERN)
+TAR_TMP_DIR:=$(shell mktemp -d -u -t tarball-XXXXXXX)
 endif
 
 SPEC_FILE=$(PKGNAME).spec
@@ -18,9 +18,9 @@ RPM_DEFINES = --define "_specdir $(TMPDIR)/SPECS" --define "_rpmdir $(TMPDIR)/RP
 
 MAKE_DIRS= $(TMPDIR)/SPECS $(TMPDIR)/SOURCES $(TMPDIR)/BUILD $(TMPDIR)/SRPMS $(TMPDIR)/RPMS
 
-ifndef VERSION
-VERSION:=$(shell git describe | sed -e 's/-/\./g')
-endif
+# If there is a VERSION file, use it.
+#   else use git describe
+VERSION:=$(shell if [ -f "VERSION" ] ; then  cat VERSION ; else   git describe | sed -e 's/-/\./g' ; fi)
 
 TARBALL=$(PKGNAME)-$(VERSION).tar.gz
 
@@ -33,7 +33,6 @@ vmpool:
 	go build -ldflags "-X main.version $(VERSION)" vmpool.go
 	@rm -rf tmp*
 
-
 install:
 	mkdir -p $(DESTDIR)/usr/local/bin
 	cp -pr vmpool $(DESTDIR)/usr/local/bin
@@ -44,13 +43,14 @@ linux:
 	GOARCH=amd64 GOOS=linux go build
 
 clean:
-	rm -rf vmpool *tar.gz rpmbuild-* *.src.rpm tmp*
+	rm -rf vmpool *tar.gz rpmbuild-* *.src.rpm tmp* VERSION
 
 uninstall:
 	rm -rf $(DESTDIR)/usr/local/bin/vmpool
 
 tarball:
 	rm -rf tmp*
+	echo $(VERSION) > VERSION
 	mkdir -p $(TAR_TMP_DIR)/$(PKGNAME)-$(VERSION)
 	cd ..; cp -pr $(PKGNAME)/* $(TAR_TMP_DIR)/$(PKGNAME)-$(VERSION); rm -rf $(TAR_TMP_DIR)/$(PKGNAME)-$(VERSION)/{contrib,*.spec}
 	cd $(TAR_TMP_DIR);  tar pczf $(TARBALL)  $(PKGNAME)-$(VERSION)
@@ -69,6 +69,5 @@ srpm: tarball
 	@rm -rf $(TMPDIR)
 	@echo
 	@ls *src.rpm
-
 
 .PHONY: intall fmt clean tarball uninstall
