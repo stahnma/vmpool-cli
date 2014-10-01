@@ -1,4 +1,4 @@
-PKGNAME=vmpool-cli
+PKGNAME=vmpool
 
 UNAME:=$(shell uname)
 ifeq ($(UNAME),Darwin)
@@ -50,9 +50,10 @@ uninstall:
 	rm -rf $(DESTDIR)/usr/local/bin/vmpool
 
 tarball:
+	rm -rf tmp*
 	mkdir -p $(TAR_TMP_DIR)/$(PKGNAME)-$(VERSION)
 	cd ..; cp -pr $(PKGNAME)/* $(TAR_TMP_DIR)/$(PKGNAME)-$(VERSION); rm -rf $(TAR_TMP_DIR)/$(PKGNAME)-$(VERSION)/{contrib,*.spec}
-	cd $(TAR_TMP_DIR); tar pczf $(TARBALL)  $(PKGNAME)-$(VERSION)
+	cd $(TAR_TMP_DIR);  tar pczf $(TARBALL)  $(PKGNAME)-$(VERSION)
 	mv $(TAR_TMP_DIR)/$(TARBALL) .
 	rm -rf $(TAR_TMP_DIR) tmp*
 
