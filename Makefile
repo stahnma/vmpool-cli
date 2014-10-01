@@ -12,6 +12,7 @@ TAR_TMP_DIR:=$(shell mktemp -d -u -t tarball-XXXXXXX)
 endif
 
 SPEC_FILE=$(PKGNAME).spec
+PWD:=$(shell pwd)
 
 RPMBUILD := $(shell if test -f /usr/bin/rpmbuild ; then echo /usr/bin/rpmbuild ; else echo "x" ; fi)
 RPM_DEFINES = --define "_specdir $(TMPDIR)/SPECS" --define "_rpmdir $(TMPDIR)/RPMS" --define "_sourcedir $(TMPDIR)/SOURCES" --define "_srcrpmdir $(TMPDIR)/SRPMS" --define "_builddir $(TMPDIR)/BUILD"
@@ -52,7 +53,7 @@ tarball:
 	rm -rf tmp*
 	echo $(VERSION) > VERSION
 	mkdir -p $(TAR_TMP_DIR)/$(PKGNAME)-$(VERSION)
-	cd ..; cp -pr $(PKGNAME)/* $(TAR_TMP_DIR)/$(PKGNAME)-$(VERSION); rm -rf $(TAR_TMP_DIR)/$(PKGNAME)-$(VERSION)/{contrib,*.spec}
+	cd ..; cp -pr $(PWD)/* $(TAR_TMP_DIR)/$(PKGNAME)-$(VERSION); rm -rf $(TAR_TMP_DIR)/$(PKGNAME)-$(VERSION)/{contrib,*.spec}
 	cd $(TAR_TMP_DIR);  tar pczf $(TARBALL)  $(PKGNAME)-$(VERSION)
 	mv $(TAR_TMP_DIR)/$(TARBALL) .
 	rm -rf $(TAR_TMP_DIR) tmp*
