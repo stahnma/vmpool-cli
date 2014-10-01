@@ -12,9 +12,8 @@ end
 
 class Vmpool < Formula
   homepage "https://github.com/stahnma/vmpool-cli"
-  # The version inside the tarball is nil. This suck. #FIXME
-  url "http://yum.stahnkage.com/sources/vmpool-0.0.0.10.gcf9ed2a.tar.gz"
-  sha1 "1b6b4dd5e08bad5fe61b5d7d705fa3f56556db50"
+  url "http://yum.stahnkage.com/sources/vmpool-0.0.0.13.g648ce9d.tar.gz"
+  sha1 "1a51a0ebf4b6b7aa510dcbec70dc6c3216ea7e34"
 
   head "https://github.com/stahnma/vmpool-cli.git", :shallow => false, :using => VmpoolHeadDownloadStrategy
 
