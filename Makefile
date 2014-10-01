@@ -1,11 +1,17 @@
-
 PKGNAME=vmpool-cli
-TMP_PATTERN:=$(shell mktemp -d -u -p . -t rpmbuild-XXXXXXX)
-TMPDIR=$(shell pwd)/$(TMP_PATTERN)
-TAR_TMP_DIR:=$(shell mktemp -d -u -t tarball-XXXXXXX)
+
+UNAME:=$(shell uname)
+ifeq ($(UNAME),Darwin)
+TMP_PATTERN:=$(shell mktemp -d tmpbuild-XXXXXX)
+TMPDIR:=$(shell pwd)/$(TMP_PATTERN)
+TAR_TMP_DIR:=$(shell mktemp -d -t tmptarball)
+else
+#TMP_PATTERN:=$(shell mktemp -d -u -p . -t rpmbuild-XXXXXXX)
+#TMPDIR:=$(shell pwd)/$(TMP_PATTERN)
+#TAR_TMP_DIR:=$(shell mktemp -d -u -t tarball-XXXXXXX)
+endif
 
 SPEC_FILE=$(PKGNAME).spec
-
 
 RPMBUILD := $(shell if test -f /usr/bin/rpmbuild ; then echo /usr/bin/rpmbuild ; else echo "x" ; fi)
 RPM_DEFINES = --define "_specdir $(TMPDIR)/SPECS" --define "_rpmdir $(TMPDIR)/RPMS" --define "_sourcedir $(TMPDIR)/SOURCES" --define "_srcrpmdir $(TMPDIR)/SRPMS" --define "_builddir $(TMPDIR)/BUILD"
@@ -25,6 +31,7 @@ fmt:
 
 vmpool:
 	go build -ldflags "-X main.version $(VERSION)" vmpool.go
+	@rm -rf tmp*
 
 
 install:
@@ -37,7 +44,7 @@ linux:
 	GOARCH=amd64 GOOS=linux go build
 
 clean:
-	rm -rf vmpool *tar.gz rpmbuild-* *.src.rpm
+	rm -rf vmpool *tar.gz rpmbuild-* *.src.rpm tmp*
 
 uninstall:
 	rm -rf $(DESTDIR)/usr/local/bin/vmpool
@@ -47,7 +54,7 @@ tarball:
 	cd ..; cp -pr $(PKGNAME)/* $(TAR_TMP_DIR)/$(PKGNAME)-$(VERSION); rm -rf $(TAR_TMP_DIR)/$(PKGNAME)-$(VERSION)/{contrib,*.spec}
 	cd $(TAR_TMP_DIR); tar pczf $(TARBALL)  $(PKGNAME)-$(VERSION)
 	mv $(TAR_TMP_DIR)/$(TARBALL) .
-	rm -rf $(TAR_TMP_DIR)
+	rm -rf $(TAR_TMP_DIR) tmp*
 
 # If you're on a system with rpm, you can build a srpm to throw at mock or something.
 srpm: tarball
@@ -63,4 +70,4 @@ srpm: tarball
 	@ls *src.rpm
 
 
-.PHONY: intall fmt clean
+.PHONY: intall fmt clean tarball uninstall
