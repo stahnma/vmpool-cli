@@ -1,13 +1,13 @@
 package main
 
-import "net/http"
-import "fmt"
-import "log"
-import "io/ioutil"
-import "os"
-import "bytes"
-import "strings"
-import "encoding/json"
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"os"
+	"strings"
+)
 
 var cmdGrab = &Command{
 	Run:       runGrab,
@@ -23,23 +23,18 @@ func runGrab(cmd *Command, args []string) {
 	if len(args) < 1 {
 		cmd.Usage()
 	}
-	url := vmpool_url + "/" + strings.Join(args, "+")
-	input_json := []byte("{}")
-	body := bytes.NewBuffer(input_json)
-	client := &http.Client{}
-	req, err := http.NewRequest("POST", url, body)
-	perror(err)
-	req.Header.Add("User-Agent", "vmpool-cli")
-	resp, err := client.Do(req)
-	perror(err)
+	resp, err := Request("POST", strings.Join(args, "+"), "{}")
+	if err != nil {
+		log.Printf("%v\n", err)
+		os.Exit(1)
+	}
 	defer resp.Body.Close()
 	contents, err := ioutil.ReadAll(resp.Body)
 	var j map[string]interface{}
 	err = json.Unmarshal(contents, &j)
 	perror(err)
-	ok := j["ok"]
-	if ok == false {
-		log.Printf("Invalid pool name in: [ %s ]\n", strings.Join(args, ", "))
+	if j["ok"] == false {
+		log.Printf("Invalid pool name(s): [ %s ]\n", strings.Join(args, ", "))
 		os.Exit(1)
 	}
 	for _, arg := range unique(args) {

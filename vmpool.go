@@ -1,12 +1,14 @@
 package main
 
-import "fmt"
-import "flag"
-import "strings"
-import "os"
-import "io"
-import "regexp"
-import "text/template"
+import (
+	"flag"
+	"fmt"
+	"io"
+	"os"
+	"regexp"
+	"strings"
+	"text/template"
+)
 
 var version string
 
