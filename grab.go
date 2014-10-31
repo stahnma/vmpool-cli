@@ -30,26 +30,49 @@ func runGrab(cmd *Command, args []string) {
 	}
 	defer resp.Body.Close()
 	contents, err := ioutil.ReadAll(resp.Body)
+	perror(err)
 	var j map[string]interface{}
 	err = json.Unmarshal(contents, &j)
 	perror(err)
 	if j["ok"] == false {
-		log.Printf("Invalid pool name(s): [ %s ]\n", strings.Join(args, ", "))
+		if len(args) > 1 {
+			// Check which of the pools they gave aren't valid
+			invalidMap := make(map[string]bool)
+			for _, arg := range args {
+				invalidMap[arg] = true
+			}
+			pools := Vmpools()
+			for _, pool := range pools {
+				if invalidMap[pool] {
+					invalidMap[pool] = false
+				}
+			}
+			invalidPools := make([]string, 0)
+			for pool := range invalidMap {
+				if invalidMap[pool] {
+					invalidPools = append(invalidPools, pool)
+				}
+			}
+			log.Printf("Invalid pool name(s): [ %s ]\n", strings.Join(invalidPools, ", "))
+		} else {
+			log.Printf("Invalid pool name: %s\n", args[0])
+		}
 		os.Exit(1)
 	}
 	for _, arg := range unique(args) {
 		a := j[arg].(map[string]interface{})
-		b := a["hostname"]
-		switch b.(type) {
+		hosts := a["hostname"]
+		switch hosts.(type) {
 		case string:
-			host := b.(string)
+			host := hosts.(string)
 			fmt.Printf("%v: %v.%v\n", arg, host, j["domain"])
 		case []interface{}:
-			b := b.([]interface{})
-			hosts := interfacesToStrings(b)
-			suffix := fmt.Sprintf(".%s\n    ", j["domain"])
-			hostsString := fmt.Sprintf("\n    %s.%s\n", strings.Join(hosts, suffix), j["domain"])
-			fmt.Printf("%v:%s", arg, hostsString)
+			fmt.Printf("%v:\n", arg)
+			hosts := hosts.([]interface{})
+			for _, host := range hosts {
+				host := host.(string)
+				fmt.Printf("    %v.%v\n", host, j["domain"])
+			}
 		}
 	}
 }
@@ -64,12 +87,4 @@ func unique(args []string) []string {
 		uniques = append(uniques, key)
 	}
 	return uniques
-}
-
-func interfacesToStrings(list []interface{}) []string {
-	output := make([]string, len(list))
-	for i, elm := range list {
-		output[i] = elm.(string)
-	}
-	return output
 }

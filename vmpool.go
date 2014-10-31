@@ -5,50 +5,17 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"regexp"
 	"strings"
 	"text/template"
 )
 
 var version string
 
-func matchPattern(pattern string) func(name string) bool {
-	reg := regexp.MustCompile(pattern)
-	return func(name string) bool {
-		return reg.MatchString(name)
+func init() {
+	//  vlcoud base configuration can be overidden via ENV variable
+	if vmpool_url = os.Getenv("VMPOOL_URL"); vmpool_url == "" {
+		vmpool_url = "http://vcloud.delivery.puppetlabs.net/vm"
 	}
-}
-
-func filterStrings(list []string, pattern string) []string {
-	cleaned := []string{}
-	match := matchPattern(pattern)
-	for _, elm := range list {
-		if match(elm) {
-			cleaned = append(cleaned, elm)
-		}
-	}
-	return cleaned
-}
-
-func printStrings(list []string) {
-	for _, elm := range list {
-		fmt.Println(elm)
-	}
-}
-
-func perror(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
-func (c *Command) Name() string {
-	name := c.UsageLine
-	i := strings.Index(name, " ")
-	if i >= 0 {
-		name = name[:i]
-	}
-	return name
 }
 
 var usageTemplate = `Vmpool is a tool for retrieving remote vms.
@@ -86,10 +53,28 @@ type Command struct {
 	Flag flag.FlagSet
 }
 
+// Usage prints the
 func (c *Command) Usage() {
 	fmt.Fprintf(os.Stderr, "usage: %s\n\n", c.UsageLine)
 	fmt.Fprintf(os.Stderr, "%s\n", strings.TrimSpace(c.Long))
 	os.Exit(2)
+}
+
+// Name returns the first word of the UsageLine
+func (c *Command) Name() string {
+	name := c.UsageLine
+	i := strings.Index(name, " ")
+	if i >= 0 {
+		name = name[:i]
+	}
+	return name
+}
+
+var commands = []*Command{
+	cmdList,
+	cmdGrab,
+	cmdDelete,
+	cmdVersion,
 }
 
 // tmpl executes the given template text on data, writing the result to w.
@@ -110,21 +95,7 @@ func usage() {
 	os.Exit(2)
 }
 
-var commands = []*Command{
-	cmdList,
-	cmdGrab,
-	cmdDelete,
-	cmdVersion,
-}
-
 var vmpool_url string
-
-func init() {
-	//  vlcoud base configuration can be overidden via ENV variable
-	if vmpool_url = os.Getenv("VMPOOL_URL"); vmpool_url == "" {
-		vmpool_url = "http://vcloud.delivery.puppetlabs.net/vm"
-	}
-}
 
 var helpTemplate = `usage: go {{.UsageLine}}
 

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"log"
 	"os"
@@ -18,28 +19,30 @@ or the whole list if no pattern is specified.
     `,
 }
 
-func runList(cmd *Command, args []string) {
+func Vmpools() []string {
 	resp, err := Request("GET", "", "{}")
 	if err != nil {
 		log.Printf("%v\n", err)
 		os.Exit(1)
 	}
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	s := string(body[:])
-	for _, char := range []string{`[`, `]`, `"`, `,`} {
-		s = strings.Replace(s, char, "", -1)
+	contents, err := ioutil.ReadAll(resp.Body)
+	perror(err)
+	var pools []string
+	err = json.Unmarshal(contents, &pools)
+	perror(err)
+	return pools
+}
+
+func runList(cmd *Command, args []string) {
+	pools := Vmpools()
+	if len(args) != 1 || len(args) != 0 {
+		cmd.Usage()
 	}
-	list := strings.Fields(s)
-	if len(args) < 1 {
-		printStrings(list)
-	} else {
-		if len(args) != 1 {
-			cmd.Usage()
-		}
+	if len(args) == 1 {
 		pattern := args[0]
 		pattern = strings.ToLower(pattern)
-		list = filterStrings(list, pattern)
-		printStrings(list)
+		pools = filterStrings(pools, pattern)
 	}
+	printStrings(pools)
 }
