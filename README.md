@@ -1,4 +1,4 @@
-
+A CLI client for [vmpooler](https://github.com/puppetlabs/vmpooler) server infrastructure.
 
 # Installation
 
@@ -18,9 +18,35 @@ for usage: clone this project
 
     make srpm
 
-# put the srpm in mock against the target you want to build for
+put the srpm in mock against the target you want to build for
 
-# Grabbing multiple VMs
+----
+
+# Usage
+
+
+## List Pools
+
+    vmpool list
+
+See what pools are currently available in the infrastructure.
+
+## Grab a VM
+
+    vmpool grab <pool name>
+
+
+After you grab the VM, you'll need to use the testing (beaker) private key to access the systems.
+
+
+## Delete a VM
+
+    vmpool delete <pool name>
+
+
+Deleting a VM is good for the overall resource utilization if you're done with the VM. They will be destroyed in 12 hours if you don't remove them before that.
+
+## Grabbing multiple VMs
 
 To fetch multiple vms simply provide whatever valid platforms
 you desire as arguements to the grab command.
