@@ -28,10 +28,10 @@ TARBALL=$(PKGNAME)-$(VERSION).tar.gz
 build: vmpool
 
 fmt:
-	go fmt vmpool.go
+	go fmt *.go
 
 vmpool:
-	go build -ldflags "-X main.version $(VERSION)" vmpool.go
+	go build -o vmpool -ldflags "-X main.version $(VERSION)" *.go
 	@rm -rf tmp*
 
 install:
