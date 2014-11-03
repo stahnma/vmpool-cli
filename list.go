@@ -36,7 +36,7 @@ func Vmpools() []string {
 
 func runList(cmd *Command, args []string) {
 	pools := Vmpools()
-	if len(args) != 1 || len(args) != 0 {
+	if len(args) != 1 && len(args) != 0 {
 		cmd.Usage()
 	}
 	if len(args) == 1 {
