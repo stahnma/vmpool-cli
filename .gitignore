@@ -2,3 +2,4 @@ VERSION
 tmp*
 *.tar.gz
 *.rpm
+vmpool
