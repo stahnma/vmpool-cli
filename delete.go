@@ -28,7 +28,7 @@ func runDelete(cmd *Command, args []string) {
 		if matchPattern("delivery.puppetlabs.net")(arg) {
 			arg = strings.Split(arg, ".")[0]
 		}
-		resp, err := Request("DETELE", arg, "{}")
+		resp, err := Request("DELETE", arg, "{}")
 		if err != nil {
 			log.Printf("%v\n", err)
 			os.Exit(1)
