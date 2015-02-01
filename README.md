@@ -63,6 +63,6 @@ debian-7-x86_64:
 
 ## Configuring what vmpooler host you hit
 
-You can export VMPOOL_URL to point to any vmpooler.
+You can export `VMPOOL_URL` to point to any vmpooler.
 
 By default it points to  http://vcloud.delivery.puppetlabs.net/vm.
