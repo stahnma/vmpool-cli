@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"strconv"
+	"time"
 )
 
 var cmdVersion = &Command{
@@ -16,5 +18,7 @@ func runVersion(cmd *Command, args []string) {
 		cmd.Usage()
 	}
 
-	fmt.Printf("vmpool version: %s - 2014\n", version)
+	t := time.Now()
+	year := strconv.Itoa(t.Year())
+	fmt.Printf("vmpool version: %s - "+year+"\n", version)
 }
