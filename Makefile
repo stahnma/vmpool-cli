@@ -35,8 +35,10 @@ vmpool:
 	@rm -rf tmp*
 
 install:
-	mkdir -p $(DESTDIR)/usr/local/bin
+	mkdir -p $(DESTDIR)/usr/local/bin $(DESTDIR)/usr/local/share/man/man1
 	cp -pr vmpool $(DESTDIR)/usr/local/bin
+	pandoc -s -t man manpage.md -o vmpool.1
+	cp -pr vmpool.1 $(DESTDIR)/usr/local/share/man/man1
 
 linux:
 # In order to get the cross-compile options on mac, install via
@@ -47,7 +49,7 @@ clean:
 	rm -rf vmpool *tar.gz rpmbuild-* *.src.rpm tmp* VERSION *.tar
 
 uninstall:
-	rm -rf $(DESTDIR)/usr/local/bin/vmpool
+	rm -rf $(DESTDIR)/usr/local/bin/vmpool $(DESTDIR)/usr/local/share/man/man1/vmpool.1
 
 tarball:
 	git archive --format=tar --prefix=vmpool-$(VERSION)/ $(shell git describe)  > vmpool-$(VERSION).tar
