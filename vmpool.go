@@ -4,9 +4,17 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"strings"
 	"text/template"
+)
+
+var (
+	Trace   *log.Logger
+	Info    *log.Logger
+	Warning *log.Logger
+	Error   *log.Logger
 )
 
 var version string
@@ -14,7 +22,7 @@ var version string
 func init() {
 	//  vlcoud base configuration can be overidden via ENV variable
 	if vmpool_url = os.Getenv("VMPOOL_URL"); vmpool_url == "" {
-		vmpool_url = "http://vcloud.delivery.puppetlabs.net/vm"
+		vmpool_url = "https://vmpooler.delivery.puppetlabs.net"
 	}
 }
 
@@ -71,10 +79,14 @@ func (c *Command) Name() string {
 }
 
 var commands = []*Command{
-	cmdList,
 	cmdGrab,
 	cmdDelete,
+	cmdList,
+	cmdStatus,
+	cmdSummary,
+	cmdToken,
 	cmdVersion,
+	cmdVm,
 }
 
 // tmpl executes the given template text on data, writing the result to w.
@@ -97,7 +109,7 @@ func usage() {
 
 var vmpool_url string
 
-var helpTemplate = `usage: go {{.UsageLine}}
+var helpTemplate = `usage: vmpool {{.UsageLine}}
 
 {{.Long | trim}}
 `
