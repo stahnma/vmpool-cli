@@ -1,12 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
-	"strings"
 )
 
 var cmdDelete = &Command{
@@ -25,25 +22,15 @@ func runDelete(cmd *Command, args []string) {
 	}
 	for _, arg := range args {
 		// Truncate the domain if required
-		if matchPattern("delivery.puppetlabs.net")(arg) {
-			arg = strings.Split(arg, ".")[0]
-		}
-		resp, err := Request("DELETE", arg, "{}")
-		if err != nil {
-			log.Printf("%v\n", err)
-			os.Exit(1)
-		}
-		defer resp.Body.Close()
-		contents, err := ioutil.ReadAll(resp.Body)
-		perror(err)
-		var output_json map[string]bool
-		err = json.Unmarshal(contents, &output_json)
-		perror(err)
-		if !output_json["ok"] {
-			log.Printf("Host %s not found.\n", arg)
+		shortname := shortname(arg)
+		_, output_json := RequestWrapper("delete", shortname, "DELETE", "{}")
+
+		if output_json["ok"] == false {
+			log.Printf("Host %s not found.\n", shortname)
 			os.Exit(1)
 		} else {
-			fmt.Printf("%s deleted\n", arg)
+			fmt.Printf("%s deleted\n", shortname)
+			logmsg(fmt.Sprintf("%s deleted\n", shortname))
 		}
 	}
 }

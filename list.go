@@ -20,7 +20,7 @@ or the whole list if no pattern is specified.
 }
 
 func Vmpools() []string {
-	resp, err := Request("GET", "", "{}")
+	resp, err := Request("list", "GET", "", "{}")
 	if err != nil {
 		log.Printf("%v\n", err)
 		os.Exit(1)
@@ -45,4 +45,7 @@ func runList(cmd *Command, args []string) {
 		pools = filterStrings(pools, pattern)
 	}
 	printStrings(pools)
+	if len(pools) == 0 {
+		os.Exit(1)
+	}
 }

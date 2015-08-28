@@ -23,7 +23,7 @@ func runGrab(cmd *Command, args []string) {
 	if len(args) < 1 {
 		cmd.Usage()
 	}
-	resp, err := Request("POST", strings.Join(args, "+"), "{}")
+	resp, err := Request("grab", "POST", strings.Join(args, "+"), "{}")
 	if err != nil {
 		log.Printf("%v\n", err)
 		os.Exit(1)
@@ -60,20 +60,26 @@ func runGrab(cmd *Command, args []string) {
 		os.Exit(1)
 	}
 	for _, arg := range unique(args) {
+		var vm string
 		a := j[arg].(map[string]interface{})
 		hosts := a["hostname"]
 		switch hosts.(type) {
 		case string:
 			host := hosts.(string)
+			vm = host
 			fmt.Printf("%v: %v.%v\n", arg, host, j["domain"])
+			logmsg(fmt.Sprintf("Retrievded %v from pool %v\n", host, args[0]))
 		case []interface{}:
 			fmt.Printf("%v:\n", arg)
 			hosts := hosts.([]interface{})
 			for _, host := range hosts {
 				host := host.(string)
+				vm = shortname(host)
 				fmt.Printf("    %v.%v\n", host, j["domain"])
+				logmsg(fmt.Sprintf("Retrieved %v from pool %v\n", host, args[0]))
 			}
 		}
+		appendTags(shortname(vm))
 	}
 }
 
