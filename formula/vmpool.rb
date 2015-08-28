@@ -15,7 +15,7 @@ class Vmpool < Formula
 
   homepage "https://github.com/stahnma/vmpool-cli"
   url "http://yum.stahnkage.com/sources/vmpool-0.2.1.tar.gz"
-  sha256 "1a1fea37ed0bca40a40f348fc9e5939280f8f3b2a7ef491877c1f4a1aa7fef06"
+  sha256 "f5e4d8bd43733f5d93a2b7b8040ba862408cef24507a229a234b35cb50e719db"
 
   head "https://github.com/stahnma/vmpool-cli.git", :shallow => false, :using => VmpoolHeadDownloadStrategy
 
