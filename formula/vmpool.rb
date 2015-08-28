@@ -12,8 +12,7 @@ end
 
 class Vmpool < Formula
   homepage "https://github.com/stahnma/vmpool-cli"
-  url "http://yum.stahnkage.com/sources/vmpool-0.0.0.13.g648ce9d.tar.gz"
-  sha1 "1a51a0ebf4b6b7aa510dcbec70dc6c3216ea7e34"
+  url "http://yum.stahnkage.com/sources/vmpool-0.2.0.tar.gz"
 
   head "https://github.com/stahnma/vmpool-cli.git", :shallow => false, :using => VmpoolHeadDownloadStrategy
 
@@ -25,6 +24,6 @@ class Vmpool < Formula
   end
 
   def caveats
-    "You're going to want to build head on this, since I'll never update the source tarball"
+    "You're going to want to build head on this, since I rarely update the source tarball."
   end
 end
