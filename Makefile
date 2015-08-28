@@ -28,10 +28,10 @@ TARBALL=$(PKGNAME)-$(VERSION).tar.gz
 build: vmpool
 
 fmt:
-	go fmt *.go
+	go fmt *.go ; rm -rf tmpbuild-*
 
 vmpool:
-	go build -o vmpool -ldflags "-X main.version $(VERSION)" *.go
+	go build -o vmpool -ldflags "-X=main.version=$(VERSION)" *.go
 	@rm -rf tmp*
 
 install:
@@ -71,4 +71,4 @@ srpm: tarball
 	@echo
 	@ls *src.rpm
 
-.PHONY: intall fmt clean tarball uninstall
+.PHONY: intall fmt clean tarball uninstall linux all build vmpool
