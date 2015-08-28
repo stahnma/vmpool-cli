@@ -44,19 +44,19 @@ linux:
 	GOARCH=amd64 GOOS=linux go build
 
 clean:
-	rm -rf vmpool *tar.gz rpmbuild-* *.src.rpm tmp* VERSION
+	rm -rf vmpool *tar.gz rpmbuild-* *.src.rpm tmp* VERSION *.tar
 
 uninstall:
 	rm -rf $(DESTDIR)/usr/local/bin/vmpool
 
 tarball:
-	rm -rf tmp*
-	echo $(VERSION) > VERSION
-	mkdir -p $(TAR_TMP_DIR)/$(PKGNAME)-$(VERSION)
-	cd ..; cp -pr $(PWD)/* $(TAR_TMP_DIR)/$(PKGNAME)-$(VERSION); rm -rf $(TAR_TMP_DIR)/$(PKGNAME)-$(VERSION)/{contrib,*.spec}
-	cd $(TAR_TMP_DIR);  tar pczf $(TARBALL)  $(PKGNAME)-$(VERSION)
-	mv $(TAR_TMP_DIR)/$(TARBALL) .
-	rm -rf $(TAR_TMP_DIR) tmp*
+	git archive --format=tar --prefix=vmpool-$(VERSION)/ $(shell git describe)  > vmpool-$(VERSION).tar
+	mkdir vmpool-$(VERSION)
+	[ -f "VERSION" ] || echo $(VERSION) > VERSION
+	mv VERSION vmpool-$(VERSION)
+	tar rf vmpool-$(VERSION).tar vmpool-$(VERSION)/VERSION
+	gzip vmpool-$(VERSION).tar
+	rm -rf vmpool-$(VERSION) tmpbuild-*
 
 # If you're on a system with rpm, you can build a srpm to throw at mock or something.
 srpm: tarball
