@@ -11,16 +11,21 @@ class VmpoolHeadDownloadStrategy < GitDownloadStrategy
 end
 
 class Vmpool < Formula
+  desc "Interact with a vmpooler instance easily."
+
   homepage "https://github.com/stahnma/vmpool-cli"
   url "http://yum.stahnkage.com/sources/vmpool-0.2.0.tar.gz"
 
   head "https://github.com/stahnma/vmpool-cli.git", :shallow => false, :using => VmpoolHeadDownloadStrategy
 
   depends_on "go" => :build
+  depends_on "pandoc" => :build
 
   def install
     system "make vmpool"
     bin.install 'vmpool'
+    system "pandoc -s -t man manpage.md -o vmpool.1"
+    man1.install "vmpool.1"
   end
 
   def caveats
