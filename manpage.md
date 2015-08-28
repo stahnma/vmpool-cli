@@ -5,7 +5,7 @@
 
 #SYNOPSIS
 
-vmpool <grab|delete|list|status|summary|token|version|vm>        
+vmpool <grab|delete|list|status|summary|token|version|vm>
 
 #DESCRIPTION
 
@@ -14,14 +14,14 @@ vmpool is a fast multi-platform API client for a vmpooler fronted infrastructure
 #SUBCOMMANDS
 
 ##grab
-Grab uses an HTTP POST to request one or more VMs from the pool(s) specified. 
+Grab uses an HTTP POST to request one or more VMs from the pool(s) specified.
 
 _Note:_ As of verison 0.2.0 all VMs are tagged with User: LDAP_USERNAME as to be tracable.
 
-Usage: 
+Usage:
 
     vmpool grab <pool name> <pool name>
-    
+
 Exit Codes:
 
 0 - Instance Reserved
@@ -35,7 +35,7 @@ Usage
 
     vmpool delete <hostname>
     vmpool vm delete <hostname>
-    
+
 Exit Codes:
 
 0 - Host destroyed
@@ -48,16 +48,18 @@ List available pool names on stdout.
 Usage
 
     vmpool list [filter]
-    
+
 Exit Codes:
 
 0 - Pools Listed
 
 1 - General Error
-  
-      
+
+
 ##status
 Display vmpooler health information via the status endpoint.
+
+    vmpool status
 
 Exit Codes:
 
@@ -69,6 +71,17 @@ Exit Codes:
 Display summary information for the vmpooler.
 
 _Warning_: This can be long and verbose.
+
+Usage
+
+    vmpool summary
+    
+Exit Codes:
+
+0 - Summary Listed
+
+1 - General Error
+
 ##token
 Interact with tokens. Tokens are the authentication key used by the vmpooler. In most cases, the vmpool client will aquire/retrieve a token from the vmpool API without direct user interaction.
 
@@ -112,7 +125,7 @@ Request a VM from the pool specified.
 Display detailed information for a vm.
 
      vmpool vm info <hostname>
-     
+
 Alter the lifetime of a VM.
 
 
@@ -153,13 +166,15 @@ Get a VM and adjust the lifetime to 2 hours.
         "domain": "delivery.puppetlabs.net"
       }
     }
-    $ vmpool vm lifetime t7g9t6kim9phvli 2 
+    $ vmpool vm lifetime t7g9t6kim9phvli 2
     Lifetime changed to 2 on t7g9t6kim9phvli
 
 #SEE ALSO
 
-[https://github.com/puppetlabs/vmpooler/blob/master/API.md]() - Official API documetnation
+https://github.com/puppetlabs/vmpooler/blob/master/API.md - Official API documetnation
 
 
+#AUTHORS
 
+Written primarily by Michael Stahnke with significant patches from Andrew Roetker.
 

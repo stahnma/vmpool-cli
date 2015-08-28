@@ -4,3 +4,4 @@ tmp*
 *.rpm
 vmpool
 *.log
+*.1
