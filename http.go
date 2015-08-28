@@ -43,6 +43,9 @@ func Request(task, http_action, arg, input_json string) (resp *http.Response, er
 	var url string
 	var vm string
 	var token string
+	if task != "token" {
+		token = retrieveToken()
+	}
 	switch {
 	case task == "token":
 		url = vmpool_url + "/api/v1/token"
