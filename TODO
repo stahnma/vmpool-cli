@@ -1,8 +1,15 @@
-Show pool status:
 
-URI/dashboard/stats/vmpooler/pool
+ Version 2
+ ---
+ * Add godoc to functions
+ * Add timeframe option to summary
+ * Add reap feature to read log and delete all vms
+ * Snapshot subcommand
+
+ Roadmap
+ ---
+ * Try this out on Windows
+ * Auto ssh into vm after grabbing
+ * User-specified tags?
 
 
-* Show health of overall system (what's running, what's booting, etc)
-* Change a vm that up and running, extending it lifetime e.g.
-* Model status API

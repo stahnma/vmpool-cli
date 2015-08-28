@@ -65,4 +65,4 @@ debian-7-x86_64:
 
 You can export `VMPOOL_URL` to point to any vmpooler.
 
-By default it points to  http://vcloud.delivery.puppetlabs.net/vm.
+By default it points to  https://vmpooler.delivery.puppetlabs.net/vm.
