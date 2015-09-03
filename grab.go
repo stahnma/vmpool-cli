@@ -26,7 +26,7 @@ func runGrab(cmd *Command, args []string) {
 	resp, err := Request("grab", "POST", strings.Join(args, "+"), "{}")
 	if err != nil {
 		log.Printf("%v\n", err)
-		os.Exit(1)
+		os.Exit(2)
 	}
 	defer resp.Body.Close()
 	contents, err := ioutil.ReadAll(resp.Body)
@@ -57,7 +57,9 @@ func runGrab(cmd *Command, args []string) {
 		} else {
 			log.Printf("Invalid pool name: %s\n", args[0])
 		}
-		os.Exit(1)
+		log.Printf("Something went wrong with grab. Perhaps an invalid token?")
+		fmt.Println("Something went wrong with grab. Perhaps an invalid token?")
+		os.Exit(2)
 	}
 	for _, arg := range unique(args) {
 		var vm string

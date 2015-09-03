@@ -1,9 +1,7 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 )
@@ -27,21 +25,17 @@ var cmdToken = &Command{
 }
 
 func isValidToken(token string) bool {
-	params := ldapsetup()
-	resp, err := Request("token", "GET", params, "{}")
-	if err != nil {
-		log.Printf("%v\n", err)
-		os.Exit(1)
-	}
-	defer resp.Body.Close()
-	contents, err := ioutil.ReadAll(resp.Body)
-	perror(err)
-	var output_json map[string]interface{}
-	err = json.Unmarshal(contents, &output_json)
-	perror(err)
+	debug("Function: isValidToken")
+	debug("  Token: " + token)
+	//params := ldapsetup()
+	params := token
+	contents, output_json := RequestWrapper("token", params, "GET", "{}")
+	pjson(contents)
 	if _, ok := output_json[token]; ok {
+		debug("  Returning true from isValidToken")
 		return true
 	}
+	debug("  Returning false from isValidToken")
 	return false
 }
 
@@ -91,13 +85,17 @@ func deleteToken(token string) {
 }
 
 func processEnvForToken() string {
+	debug("Function: processEnvForToken")
 	if os.Getenv("VMPOOL_TOKEN") != "" {
-		if isValidToken(os.Getenv("VMPOOL_TOKEN")) {
-			logmsg("Valid token exists already: " + os.Getenv("VMPOOL_TOKEN"))
-			fmt.Println("VMPOOL_TOKEN contains valid token. Refusing to grab another.")
-			return os.Getenv("VMPOOL_TOKEN")
-		}
+		//		if isValidToken(os.Getenv("VMPOOL_TOKEN")) {
+		logmsg("Using VMPOOL_TOKEN...assuming it is valid: " + os.Getenv("VMPOOL_TOKEN"))
+		debug("VMPOOL_TOKEN...assuming it is valid: " + os.Getenv("VMPOOL_TOKEN"))
+		debug("  Returning " + os.Getenv("VMPOOL_TOKEN"))
+		return os.Getenv("VMPOOL_TOKEN")
+		//}
+
 	}
+	debug("  Returning: \"\"" + " from processEnvForToken")
 	return ""
 }
 
@@ -120,10 +118,15 @@ func grantToken() string {
 // What happens if I don't have a token?
 func retrieveToken() string {
 	debug("Function: retrieveToken")
+	token := ""
+	token = processEnvForToken()
+	if token != "" {
+		return token
+	}
+
 	params := ldapsetup()
 	_, output_json := RequestWrapper("token", params, "GET", "{}")
 	// Take the first token returned
-	var token = ""
 	for k, _ := range output_json {
 		if k == "ok" {
 			continue
@@ -138,6 +141,7 @@ func retrieveToken() string {
 }
 
 func runToken(cmd *Command, args []string) {
+	debug("Function: runToken")
 	var subcmd string
 	if len(args) > 0 {
 		subcmd = args[0]

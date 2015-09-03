@@ -56,13 +56,15 @@ func vmLifetime(hostname string, ttl string) {
 
 func appendTags(vm string) {
 	debug("Function: appendTags")
+	user := ""
 	if os.Getenv("LDAP_USERNAME") != "" {
-		tags := `{"tags": {"user":"` + os.Getenv("LDAP_USERNAME") + `", "client":"vmpool-cli-` + version + `"}}`
-		debug("Tags:" + tags)
-		vmTag(vm, tags)
+		user = os.Getenv("LDAP_USERNAME")
 	} else {
-		log.Fatal("Unable to modify tags with LDAP_USERNAME being set.")
+		user = os.Getenv("USER")
 	}
+	tags := `{"tags": {"user":"` + user + `", "client":"vmpool-cli-` + version + `"}}`
+	debug("Tags:" + tags)
+	vmTag(vm, tags)
 }
 
 func runVm(cmd *Command, args []string) {

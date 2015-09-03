@@ -31,6 +31,9 @@ func RequestWrapper(method string, params string, http_action string, input_json
 	var output_json map[string]interface{}
 	err = json.Unmarshal(contents, &output_json)
 	perror(err)
+	if output_json["ok"] == false {
+		debug("Request failed for some reason, perhaps invalid token, or invalid vm name")
+	}
 	return contents, output_json
 }
 
@@ -79,7 +82,7 @@ func Request(task, http_action, arg, input_json string) (resp *http.Response, er
 	req, err := http.NewRequest(http_action, url, body)
 	perror(err)
 	req.Header.Add("User-Agent", "vmpool-cli-"+version)
-	if task == "token" {
+	if task == "token" && strings.Contains(arg, "|") {
 		s := strings.Split(arg, "|")
 		req.SetBasicAuth(s[0], s[1])
 	}
