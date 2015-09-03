@@ -14,8 +14,8 @@ class Vmpool < Formula
   desc "Interact with a vmpooler instance easily."
 
   homepage "https://github.com/stahnma/vmpool-cli"
-  url "http://yum.stahnkage.com/sources/vmpool-0.2.1.tar.gz"
-  sha256 "f5e4d8bd43733f5d93a2b7b8040ba862408cef24507a229a234b35cb50e719db"
+  url "http://yum.stahnkage.com/sources/vmpool-0.2.2.tar.gz"
+  sha256 "49726c176070f7e9b10f7bac3a01baaf09e8678b8df9de5b2d0e1a5264b47b43"
 
   head "https://github.com/stahnma/vmpool-cli.git", :shallow => false, :using => VmpoolHeadDownloadStrategy
 
@@ -30,6 +30,6 @@ class Vmpool < Formula
   end
 
   def caveats
-    "Be sure you have LDAP_USERNAME and LDAP_PASSWORD set. See man page for more information."
+    "Be sure you have LDAP_USERNAME and LDAP_PASSWORD, or VMPOOL_TOKEN set. See man page for more information."
   end
 end
