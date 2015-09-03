@@ -31,6 +31,9 @@ func RequestWrapper(method string, params string, http_action string, input_json
 	var output_json map[string]interface{}
 	err = json.Unmarshal(contents, &output_json)
 	perror(err)
+	if output_json["ok"] == false {
+		debug("Request failed for some reason, perhaps invalid token, or invalid vm name")
+	}
 	return contents, output_json
 }
 

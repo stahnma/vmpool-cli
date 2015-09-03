@@ -26,7 +26,8 @@ func runDelete(cmd *Command, args []string) {
 		_, output_json := RequestWrapper("delete", shortname, "DELETE", "{}")
 
 		if output_json["ok"] == false {
-			log.Printf("Host %s not found.\n", shortname)
+			fmt.Println("Host not found or token invalid.")
+			log.Printf("Host %s not found or token invalid.\n", shortname)
 			os.Exit(1)
 		} else {
 			fmt.Printf("%s deleted\n", shortname)
