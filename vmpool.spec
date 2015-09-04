@@ -12,7 +12,7 @@ URL:       https://github.com/stahnma/vmpool-cli
 # Tarball given to you via make
 Source0:   %{name}-%{version}.tar.gz
 
-BuildRequires: golang, make
+BuildRequires: golang, make, pandoc
 
 %description
 VMPooler CLI for usage with https://github.com/puppetlabs/vmpooler
@@ -33,7 +33,7 @@ make install DESTDIR=%{buildroot}
 
 
 %files
-%doc
+%doc /usr/local/share/man/man1/vmpool.1
 /usr/local/bin/vmpool
 
 
