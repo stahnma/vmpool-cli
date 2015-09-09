@@ -86,12 +86,12 @@ func deleteToken(token string) {
 
 func processEnvForToken() string {
 	debug("Function: processEnvForToken")
-	if os.Getenv("VMPOOL_TOKEN") != "" {
-		//		if isValidToken(os.Getenv("VMPOOL_TOKEN")) {
-		logmsg("Using VMPOOL_TOKEN...assuming it is valid: " + os.Getenv("VMPOOL_TOKEN"))
-		debug("VMPOOL_TOKEN...assuming it is valid: " + os.Getenv("VMPOOL_TOKEN"))
-		debug("  Returning " + os.Getenv("VMPOOL_TOKEN"))
-		return os.Getenv("VMPOOL_TOKEN")
+	if os.Getenv("VMPOOLER_TOKEN") != "" {
+		//		if isValidToken(os.Getenv("VMPOOLER_TOKEN")) {
+		logmsg("Using VMPOOLER_TOKEN...assuming it is valid: " + os.Getenv("VMPOOLER_TOKEN"))
+		debug("VMPOOLER_TOKEN...assuming it is valid: " + os.Getenv("VMPOOLER_TOKEN"))
+		debug("  Returning " + os.Getenv("VMPOOLER_TOKEN"))
+		return os.Getenv("VMPOOLER_TOKEN")
 		//}
 
 	}
@@ -107,7 +107,7 @@ func grantToken() string {
 		params := ldapsetup()
 		_, output_json := RequestWrapper("token", params, "POST", "{}")
 		newtoken = fmt.Sprintf("%v", output_json["token"])
-		os.Setenv("VMPOOL_TOKEN", newtoken)
+		os.Setenv("VMPOOLER_TOKEN", newtoken)
 		logmsg(fmt.Sprintf("Aquired token: %v", newtoken))
 		fmt.Println(fmt.Sprintf("Aquired token: %v", newtoken))
 	}

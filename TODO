@@ -4,7 +4,7 @@ Current issues
  * We should be able to tell when a failure is token based vs other params
  * We should basically have three levels of permissions:
     - unauthenticated you get CRD on VMs but no update and low default lifetime
-    - VMPOOL_TOKEN set - you get CRUD on VMs but can't manipulate tokens
+    - VMPOOLER_TOKEN set - you get CRUD on VMs but can't manipulate tokens
     - LDAP_PASSWORD and LDAP_USERNAME set -- full access
 
  Version 2
