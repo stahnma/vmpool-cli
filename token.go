@@ -86,6 +86,10 @@ func deleteToken(token string) {
 
 func processEnvForToken() string {
 	debug("Function: processEnvForToken")
+	// VMPOOL_TOKEN is deprecated, but still should work
+	if os.Getenv("VMPOOL_TOKEN") != "" {
+		os.Setenv("VMPOOLER_TOKEN", os.Getenv("VMPOOL_TOKEN"))
+	}
 	if os.Getenv("VMPOOLER_TOKEN") != "" {
 		//		if isValidToken(os.Getenv("VMPOOLER_TOKEN")) {
 		logmsg("Using VMPOOLER_TOKEN...assuming it is valid: " + os.Getenv("VMPOOLER_TOKEN"))
