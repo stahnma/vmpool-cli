@@ -141,7 +141,7 @@ Alter the lifetime of a VM.
 
 **VMPOOL_LOGFILE** - Location of the application log for vmpool. By default this is in `$HOME/.vmpool.log`.
 
-**VMPOOL_TOKEN** - If you already have a TOKEN for the vmpooler, you may specify it here. This will reduce HTTP calls to the pooler and may cause a very slight performance boost. 
+**VMPOOLER_TOKEN** - If you already have a TOKEN for the vmpooler, you may specify it here. This will reduce HTTP calls to the pooler and may cause a very slight performance boost. 
 
 **VMPOOL_URL** - This is the URL of the vmpooler you are connecting to. This defaults to https://vmpooler.delivery.puppetlabs.net
 

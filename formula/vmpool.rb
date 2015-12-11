@@ -30,6 +30,6 @@ class Vmpool < Formula
   end
 
   def caveats
-    "Be sure you have LDAP_USERNAME and LDAP_PASSWORD, or VMPOOL_TOKEN set. See man page for more information."
+    "Be sure you have LDAP_USERNAME and LDAP_PASSWORD, or VMPOOLER_TOKEN set. See man page for more information."
   end
 end
