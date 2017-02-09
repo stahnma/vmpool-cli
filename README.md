@@ -41,7 +41,7 @@ After you grab the VM, you'll need to use the testing (beaker) private key to ac
 
 ## Delete a VM
 
-    vmpool delete <pool name>
+    vmpool delete <vm name>
 
 
 Deleting a VM is good for the overall resource utilization if you're done with the VM. They will be destroyed in 12 hours if you don't remove them before that.
