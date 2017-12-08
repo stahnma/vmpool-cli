@@ -70,7 +70,7 @@ func runGrab(cmd *Command, args []string) {
 			host := hosts.(string)
 			vm = host
 			fmt.Printf("%v: %v.%v\n", arg, host, j["domain"])
-			logmsg(fmt.Sprintf("Retrievded %v from pool %v\n", host, args[0]))
+			logmsg(fmt.Sprintf("Retrieved %v from pool %v\n", host, args[0]))
 		case []interface{}:
 			fmt.Printf("%v:\n", arg)
 			hosts := hosts.([]interface{})
